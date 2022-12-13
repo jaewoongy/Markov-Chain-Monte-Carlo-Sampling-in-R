@@ -1,4 +1,4 @@
-Markov Chain Monte Carlo Simulation
+Markov Chain Monte Carlo Implementation
 ================
 Dec 8, 2022
 
