@@ -7,9 +7,9 @@ header-includes:
 output: github_document
 ---
 
-# We can generate Markov Chain Monte Carlo Samples to approximate any posterior distribution without having to know its normalizing constant.
+## We can generate Markov Chain Monte Carlo Samples to approximate any posterior distribution without having to know its normalizing constant.
 
-# Here, we approximate the bimodal Cauchy Distribution with arbitrarily set values
+#### Here, we approximate the bimodal Cauchy Distribution with arbitrarily set values
 
 ```{r}
 set.seed(10)
@@ -27,7 +27,7 @@ logpost = function(theta){
 }
 ```
 
-# Cauchy Distribution
+#### Cauchy Distribution
 
 ```{r}
 theta <- seq(0, 30, by = 0.0001)
@@ -60,16 +60,11 @@ metropolis <- function(logpost, current, C, iter){
   return(S)
 }
 
-
-```
-
-```{r, echo = F}
-
 S1 <- metropolis(logpost = logpost, current = 10, C = 3, iter = 1000)
 S2 <- metropolis(logpost = logpost, current = 10, C = 0.2, iter = 1000)
 ```
 
-# Making traceplots to deterine how our Metropolis-Hastings MCMC samples look:
+#### Making traceplots to deterine how our Metropolis-Hastings MCMC samples look:
 
 ```{r}
 library(coda)
@@ -90,7 +85,7 @@ hist(S2)
 
 Looking at the histogram, we can see that our S1 histogram looks very similar to our Cauchy Distribution since they are both bimodal which makes sense since we're generating samples for it, while our S2 does not. Hence, we can say that S1 or C=3 better approximates our distribution.
 
-# We will now implement the Gibbs sampling MCMC method
+#### We will now implement the Gibbs sampling MCMC method
 
 ```{r}
 gaussian_gibbs = function(burn_in, keep_draws, theta0, rho){
@@ -106,7 +101,7 @@ return(theta_sample_out)
 }
 ```
 
-# Making traceplots to deterine how our Gibbs MCMC samples look:
+#### Making traceplots to deterine how our Gibbs MCMC samples look:
 
 ```{r}
 # traceplot from our gibbs sampling

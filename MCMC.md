@@ -4,9 +4,9 @@ Dec 8, 2022
 
 
 
-# We can generate Markov Chain Monte Carlo Samples to approximate any posterior distribution without having to know its normalizing constant.
+## We can generate Markov Chain Monte Carlo Samples to approximate any posterior distribution without having to know its normalizing constant.
 
-# Here, we approximate the bimodal Cauchy Distribution with arbitrarily set values
+#### Here, we approximate the bimodal Cauchy Distribution with arbitrarily set values
 
 ``` r
 set.seed(10)
@@ -24,7 +24,7 @@ logpost = function(theta){
 }
 ```
 
-# Cauchy Distribution
+#### Cauchy Distribution
 
 ``` r
 theta <- seq(0, 30, by = 0.0001)
@@ -58,9 +58,12 @@ metropolis <- function(logpost, current, C, iter){
     }
   return(S)
 }
+
+S1 <- metropolis(logpost = logpost, current = 10, C = 3, iter = 1000)
+S2 <- metropolis(logpost = logpost, current = 10, C = 0.2, iter = 1000)
 ```
 
-# Making traceplots to deterine how our Metropolis-Hastings MCMC samples look:
+#### Making traceplots to deterine how our Metropolis-Hastings MCMC samples look:
 
 ``` r
 library(coda)
@@ -69,14 +72,14 @@ library(coda)
 coda::traceplot(as.mcmc(S1))
 ```
 
-![](MCMC_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+![](MCMC_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
 ``` r
 # Traceplot for S2
 coda::traceplot(as.mcmc(S2))
 ```
 
-![](MCMC_files/figure-gfm/unnamed-chunk-5-2.png)<!-- -->
+![](MCMC_files/figure-gfm/unnamed-chunk-4-2.png)<!-- -->
 
 By inspecting the traceplot for S1 (C = 3) and S2 (C = 0.2), we can see
 that our C = 3 is a better approximation of our posterior because we
@@ -89,13 +92,13 @@ iteration. Thus, S1 is the better approximator.
 hist(S1)
 ```
 
-![](MCMC_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](MCMC_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
 ``` r
 hist(S2)
 ```
 
-![](MCMC_files/figure-gfm/unnamed-chunk-6-2.png)<!-- -->
+![](MCMC_files/figure-gfm/unnamed-chunk-5-2.png)<!-- -->
 
 Looking at the histogram, we can see that our S1 histogram looks very
 similar to our Cauchy Distribution since they are both bimodal which
@@ -103,7 +106,7 @@ makes sense since we’re generating samples for it, while our S2 does
 not. Hence, we can say that S1 or C=3 better approximates our
 distribution.
 
-# We will now implement the Gibbs sampling MCMC method
+#### We will now implement the Gibbs sampling MCMC method
 
 ``` r
 gaussian_gibbs = function(burn_in, keep_draws, theta0, rho){
@@ -119,7 +122,7 @@ return(theta_sample_out)
 }
 ```
 
-# Making traceplots to deterine how our Gibbs MCMC samples look:
+#### Making traceplots to deterine how our Gibbs MCMC samples look:
 
 ``` r
 # traceplot from our gibbs sampling
@@ -127,13 +130,13 @@ gibbs <- gaussian_gibbs(1000, 10000, c(0,0), 0.6)
 coda::traceplot(as.mcmc(gibbs))
 ```
 
-![](MCMC_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->![](MCMC_files/figure-gfm/unnamed-chunk-8-2.png)<!-- -->
+![](MCMC_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->![](MCMC_files/figure-gfm/unnamed-chunk-7-2.png)<!-- -->
 
 ``` r
 hist(gibbs)
 ```
 
-![](MCMC_files/figure-gfm/unnamed-chunk-8-3.png)<!-- -->
+![](MCMC_files/figure-gfm/unnamed-chunk-7-3.png)<!-- -->
 
 We can see that the traceplots for both theta 1 and theta 2 converges
 since stays in the general vicinity of 0 and looks horizontal for both
@@ -149,13 +152,13 @@ samples <- mvtnorm::rmvnorm(n=10000, mean=c(0,0), sigma=cov)
 coda::traceplot(as.mcmc(samples))
 ```
 
-![](MCMC_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->![](MCMC_files/figure-gfm/unnamed-chunk-9-2.png)<!-- -->
+![](MCMC_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->![](MCMC_files/figure-gfm/unnamed-chunk-8-2.png)<!-- -->
 
 ``` r
 hist(samples)
 ```
 
-![](MCMC_files/figure-gfm/unnamed-chunk-9-3.png)<!-- -->
+![](MCMC_files/figure-gfm/unnamed-chunk-8-3.png)<!-- -->
 
 The samples from our rmvnorm look very similar with our gibbs sampling
 traceplots. The histogram of our samples resembles a normal distribution
